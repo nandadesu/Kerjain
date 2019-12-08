@@ -5,43 +5,13 @@
 /*//////////////////////////////////////////////////////////////////
 [ FONT ]*/
 
-@font-face {
-  font-family: Raleway-Regular;
-  src: url('../fonts/raleway/Raleway-Regular.ttf'); 
+.navbar-nav a{
+  font-size: 14pt;
+  font-weight: 600;
+  font-family: Arial, Helvetica, sans-serif;
 }
-
-@font-face {
-  font-family: Raleway-Medium;
-  src: url('../fonts/raleway/Raleway-Medium.ttf'); 
-}
-
-@font-face {
-  font-family: Raleway-SemiBold;
-  src: url('../fonts/raleway/Raleway-SemiBold.ttf'); 
-}
-
-@font-face {
-  font-family: Raleway-Bold;
-  src: url('../fonts/raleway/Raleway-Bold.ttf'); 
-}
-
-/*//////////////////////////////////////////////////////////////////
-[ RESTYLE TAG ]*/
-
-* {
-	margin: 0px; 
-	padding: 0px; 
-	box-sizing: border-box;
-}
-
-body, html {
-	height: 100%;
-	font-family: Raleway-Regular, sans-serif;
-}
-
 /*---------------------------------------------*/
 a {
-	font-family: Raleway-Regular;
 	font-size: 14px;
 	line-height: 1.7;
 	color: #666666;
