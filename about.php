@@ -36,8 +36,8 @@
                         Products
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item" href="products.php">Interior Product</a>
-                        <a class="dropdown-item" href="products.php">Exterior Product</a>
+                        <a class="dropdown-item" href="product.php">Interior Product</a>
+                        <a class="dropdown-item" href="product.php">Exterior Product</a>
                     </div>
                 </li>
             </ul>
