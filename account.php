@@ -1,6 +1,27 @@
 <?php
-session_start();
-require_once("connection.php");
+include "connect_user.php";
+echo isset($_SESSION['username']);
+if (isset($_SESSION['username']) > 0) {
+    $username = $_SESSION['username'];
+    $passsword = MD5($_SESSION['password']);
+    $SQL = "SELECT * FROM users WHERE username ='$username' AND password ='$passsword'";
+    $result = mysqli_query($connect, $SQL);
+} else {
+    $username = $_POST['username'];
+    $passsword = MD5($_POST['password']);
+    $SQL = "SELECT * FROM users WHERE username ='$username' AND password ='$passsword'";
+    $result = mysqli_query($connect, $SQL);
+    $cek = mysqli_num_rows($result);
+    if ($cek > 0) {
+        session_start();
+        $_SESSION['username'] = $username;
+        $_SESSION['password'] = $username;
+        $_SESSION['status'] = 'login';
+        $row = mysqli_fetch_assoc($result);
+    } else {
+        echo mysqli_error($connect);
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -33,46 +54,64 @@ require_once("connection.php");
                 <li class="nav-item">
                     <a class="nav-link" href="index.php">Home</a>
                 </li>
-                <li class="nav-item active">
-                    <a class="nav-link" href="about.php">About<span class="sr-only">(current)</span></a>
+                <li class="nav-item">
+                    <a class="nav-link" href="about.php">About</a>
                 </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Products
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item" href="product.php">Interior Product</a>
-                        <a class="dropdown-item" href="product.php">Exterior Product</a>
-                    </div>
+                <li class="nav-item">
+                    <a class="nav-link" href="product.php">Product</a>
                 </li>
             </ul>
             <ul class="nav navbar-nav ml-auto">
-                <li class="nav-item active">
-                    <button type="button" class="btn btn-link" data-toggle="modal" data-target="#loginModal"><i class="far fa-user-circle"></i></button>
-                </li>
+                <?php
+                if (isset($_SESSION['username']) > 0) {
+                    ?>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="far fa-user-circle"></i>
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <a class="dropdown-item" href="account.php">Account Information</a>
+                            <a class="dropdown-item" href="index.php" data-toggle="modal" data-target="#logoutModal">Logout</a>
+                        </div>
+                    </li>
+                <?php
+                } else {
+                    ?>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="far fa-user-circle"></i>
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#loginModal">Login</a>
+                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#regModal">Register</a>
+                        </div>
+                    </li>
+                <?php
+                }
+                ?>
                 <li class="nav-item">
-                    <button type="button" class="btn btn-link" data-toggle="modal" data-target="#regModal"><i class="fas fa-shopping-cart"></i></button>
+                    <button type="button" class="btn btn-link" href="checkout.php"><i class="fas fa-shopping-cart"></i></button>
                 </li>
             </ul>
         </div>
     </nav>
 
     <div class="container-fluid">
-        <h1 class="text-center">Hello, </h1>
+        <h1 class="text-center">Hello, <?php echo $username ?></h1>
+        <?php echo isset($_SESSION['username']);
+        ?>
         <hr>
         <div class="row">
             <div class="col-3"></div>
             <div class="col-6">
-                <b>Email Anda</b> : "email" <br>
-                <b>Alamat Anda</b> : "alamat" <br><br>
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text">Total Money</span>
-                        <span class="input-group-text">Rp.</span>
-                    </div>
-                    <input type="number" class="form-control text-right" aria-label="Amount (to the nearest dollar)" value="1000000000" disabled>
-                </div>
-
+                <b>Your Email</b> : <?php echo $row["email"] ?> <br>
+                <b>Your Address</b> : <?php echo $row["address"] ?> <br>
+                <b>Your Total Money</b> : <?php echo $row["money"] ?> <br><br>
+                <?php
+                if ($row["money"] < 10000) {
+                    echo "Your Money is almost empty, with less than 10000 you cant buy anything.";
+                }
+                ?>
             </div>
             <div class="col-3"></div>
         </div>
@@ -89,11 +128,22 @@ require_once("connection.php");
                     </button>
                 </div>
                 <div class="modal-body">
-                    ...
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <form action="account.php" method="post">
+                        <div class="input-group input-group-sm mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-sm">Username</span>
+                            </div>
+                            <input type="text" name="username" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-sm">Password</span>
+                            </div>
+                            <input type="password" name="password" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                        </div>
+                        <input class="btn btn-primary" type="submit" value="Submit">
+                        <input class="btn btn-primary" type="reset" value="Reset">
+                    </form>
                 </div>
             </div>
         </div>
@@ -109,11 +159,62 @@ require_once("connection.php");
                     </button>
                 </div>
                 <div class="modal-body">
-                    ...
+                    <form action="account.php" method="post">
+                        <div class="input-group input-group-sm mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-sm">Email</span>
+                            </div>
+                            <input type="email" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-sm">Username</span>
+                            </div>
+                            <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-sm">Password</span>
+                            </div>
+                            <input type="password" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-sm">Re-Password</span>
+                            </div>
+                            <input type="password" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                        </div>
+                        <input class="btn btn-primary" type="submit" value="Submit">
+                        <input class="btn btn-primary" type="reset" value="Reset">
+                    </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="logoutModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="logoutModalLabel">Logout</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="account.php" method="post">
+                        <p class="lead">
+                            Are you sure to Logout Account ?
+                        </p>
+                        <input name="logout">
+                        <button type="button" class="btn btn-success">Yes</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
+                    </form>
                 </div>
             </div>
         </div>

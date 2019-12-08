@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2019-12-08 18:37:44
+Date: 2019-12-08 22:15:40
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -62,4 +62,4 @@ CREATE TABLE `users` (
 -- ----------------------------
 -- Records of users
 -- ----------------------------
-INSERT INTO `users` VALUES ('1', 'test', 'test@gmail.com', 'test', 'jalan test', '100000');
+INSERT INTO `users` VALUES ('1', 'test', 'test@gmail.com', '098f6bcd4621d373cade4e832627b4f6', 'jalan test', '9000');

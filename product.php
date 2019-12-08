@@ -7,7 +7,7 @@ if (!empty($_GET["action"])) {
         case "add":
             if (!empty($_POST["quantity"])) {
                 $productByCode = $db_handle->runQuery("SELECT * FROM products WHERE code='" . $_GET["code"] . "'");
-                $itemArray = array($productByCode[0]["code"] => array('name' => $productByCode[0]["name"], 'code' => $productByCode[0]["code"], 'quantity' => $_POST["quantity"], 'price' => $productByCode[0]["price"], 'image' => $productByCode[0]["image"]));
+                $itemArray = array($productByCode[0]["code"] => array('merk' => $productByCode[0]["merk"], 'code' => $productByCode[0]["code"], 'quantity' => $_POST["quantity"], 'price' => $productByCode[0]["price"], 'image' => $productByCode[0]["image"]));
 
                 if (!empty($_SESSION["cart_item"])) {
                     if (in_array($productByCode[0]["code"], array_keys($_SESSION["cart_item"]))) {
@@ -43,7 +43,6 @@ if (!empty($_GET["action"])) {
     }
 }
 ?>
-
     <!DOCTYPE html>
     <html lang="en">
 
@@ -56,6 +55,7 @@ if (!empty($_GET["action"])) {
         <!-- CSS / JS -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
         <link rel="stylesheet" href="./css/footer.css">
+        <link rel="stylesheet" href="./css/product.css">
     </head>
 
     <body>
@@ -74,63 +74,151 @@ if (!empty($_GET["action"])) {
                     <li class="nav-item">
                         <a class="nav-link" href="about.php">About</a>
                     </li>
-                    <li class="nav-item dropdown active">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Products
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <a class="dropdown-item" href="products.php">Interior Product</a>
-                            <a class="dropdown-item" href="products.php">Exterior Product</a>
-                        </div>
+                    <li class="nav-item">
+                        <a class="nav-link" href="product.php">Product</a>
                     </li>
                 </ul>
                 <ul class="nav navbar-nav ml-auto">
-                    <li class="nav-item active">
-                        <button type="button" class="btn btn-link" data-toggle="modal" data-target="#loginModal">Login</button>
-                    </li>
+                    <?php
+                    if (isset($_SESSION['username']) > 0) {
+                        ?>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="far fa-user-circle"></i>
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <a class="dropdown-item" href="account.php">Account Information</a>
+                                <a class="dropdown-item" href="index.php" data-toggle="modal" data-target="#logoutModal">Logout</a>
+                            </div>
+                        </li>
+                    <?php
+                    } else {
+                        ?>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="far fa-user-circle"></i>
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#loginModal">Login</a>
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#regModal">Register</a>
+                            </div>
+                        </li>
+                    <?php
+                    }
+                    ?>
                     <li class="nav-item">
-                        <button type="button" class="btn btn-link" data-toggle="modal" data-target="#regModal">Register</button>
+                        <button type="button" class="btn btn-link" href="checkout.php"><i class="fas fa-shopping-cart"></i></button>
                     </li>
                 </ul>
             </div>
         </nav>
 
         <div class="container-fluid mt-2 mb-4">
-            <h1 class="text-center">Interior Product</h1>
-            <div class="row">
+            <div id="shopping-cart">
+                <div class="txt-heading">Shopping Cart</div>
+
+                <a id="btnEmpty" href="product.php?action=empty">Empty Cart</a>
                 <?php
-                $product_array = $db_handle->runQuery("SELECT * FROM products WHERE category = 'interior' AND id >= 1 AND id < 5 ORDER BY id ASC");
-                if (!empty($product_array)) {
-                    foreach ($product_array as $key => $value) {
-                        ?>
-                        <div class="col">
-                            <div class="product-item">
-                                <form method="post" action="index.php?action=add&code=<?php echo $product_array[$key]["code"]; ?>">
-                                    <div class="card" style="width: 18rem;">
-                                        <img src="<?php echo $product_array[$key]["image"]; ?>" class="card-img-top" alt="...">
-                                        <div class="card-body">
-                                            <h5 class="card-title"><?php echo $product_array[$key]["merk"]; ?></h5>
-                                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                        </div>
-                                        <ul class="list-group list-group-flush">
-                                            <li class="list-group-item"><?php echo "$" . $product_array[$key]["price"]; ?></li>
-                                            <li class="list-group-item">Dapibus ac facilisis in</li>
-                                            <li class="list-group-item">Vestibulum at eros</li>
-                                        </ul>
-                                        <div class="card-body">
-                                            <a href="#" class="card-link">Card link</a>
-                                            <a href="#" class="card-link">Another link</a>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
+                if (isset($_SESSION["cart_item"])) {
+                    $total_quantity = 0;
+                    $total_price = 0;
+                    ?>
+                    <table class="tbl-cart" cellpadding="10" cellspacing="1">
+                        <tbody>
+                            <tr>
+                                <th style="text-align:left;">Nama Barang</th>
+                                <th style="text-align:left;">Code</th>
+                                <th style="text-align:right;" width="5%">Quantity</th>
+                                <th style="text-align:right;" width="10%">Unit Price</th>
+                                <th style="text-align:right;" width="10%">Price</th>
+                                <th style="text-align:center;" width="5%">Remove</th>
+                            </tr>
+                            <?php
+                                foreach ($_SESSION["cart_item"] as $item) {
+                                    $item_price = $item["quantity"] * $item["price"];
+                                    ?>
+                                <tr>
+                                    <td><img src="<?php echo $item["image"]; ?>" class="img-thumbnail" style="width: 50px;height:50px;" /><?php echo $item["merk"]; ?></td>
+                                    <td><?php echo $item["code"]; ?></td>
+                                    <td style="text-align:right;"><?php echo $item["quantity"]; ?></td>
+                                    <td style="text-align:right;"><?php echo "Rp " . $item["price"]; ?></td>
+                                    <td style="text-align:right;"><?php echo "Rp " . number_format($item_price, 2); ?></td>
+                                    <td style="text-align:center;"><a href="product.php?action=remove&code=<?php echo $item["code"]; ?>" class="btnRemoveAction"><i class="fas fa-trash"></i></a></td>
+                                </tr>
+                            <?php
+                                    $total_quantity += $item["quantity"];
+                                    $total_price += ($item["price"] * $item["quantity"]);
+                                }
+                                ?>
+
+                            <tr>
+                                <td colspan="2" align="right">Total:</td>
+                                <td align="right"><?php echo $total_quantity; ?></td>
+                                <td align="right" colspan="2"><strong><?php echo "$ " . number_format($total_price, 2); ?></strong></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
                 <?php
-                    }
+                } else {
+                    ?>
+                    <div class="no-records">Your Cart is Empty</div>
+                <?php
                 }
                 ?>
             </div>
 
+
+            <div id="product-grid">
+                <div class="txt-heading">Products</div>
+                <div class="row">
+                    <?php
+                    $product_array = $db_handle->runQuery("SELECT * FROM products WHERE category = 'interior' AND id > 0 AND id <= 4 ORDER BY id ASC");
+                    if (!empty($product_array)) {
+                        foreach ($product_array as $key => $value) {
+                            ?>
+                            <div class="col-3">
+                                <div class="card" style="width: 18rem;">
+                                    <form method="post" action="product.php?action=add&code=<?php echo $product_array[$key]["code"]; ?>">
+                                        <img src="<?php echo $product_array[$key]["image"]; ?>" class="card-img-top" alt="...">
+                                        <div class="card-body">
+                                            <h5 class="card-title"><?php echo $product_array[$key]["merk"]; ?></h5>
+                                            <p class="card-text">Starting from Rp.<?php echo "$" . $product_array[$key]["price"]; ?></p>
+                                            <div class="cart-action"><input type="number" class="product-quantity" name="quantity" value="1" size="2" /><button type="submit" value="Add to Cart" class="btn btn-success" /></div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                    <?php
+                        }
+                    }
+                    ?>
+                </div>
+                <br>
+                <div class="row">
+                    <?php
+                    $product_array = $db_handle->runQuery("SELECT * FROM products WHERE category = 'interior' AND id > 4 AND id < 9 ORDER BY id ASC");
+                    if (!empty($product_array)) {
+                        foreach ($product_array as $key => $value) {
+                            ?>
+                            <div class="col-3">
+                                <div class="card" style="width: 18rem;">
+                                    <form method="post" action="product.php?action=add&code=<?php echo $product_array[$key]["code"]; ?>">
+                                        <img src="<?php echo $product_array[$key]["image"]; ?>" class="card-img-top" alt="...">
+                                        <div class="card-body">
+                                            <h5 class="card-title"><?php echo $product_array[$key]["merk"]; ?></h5>
+                                            <p class="card-text">Starting from Rp.<?php echo "$" . $product_array[$key]["price"]; ?></p>
+                                            <div class="cart-action"><input type="number" class="product-quantity" name="quantity" value="1" size="2" /><button type="submit" value="Add to Cart" class="btn btn-success" /></div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                    <?php
+                        }
+                    }
+                    ?>
+                </div>
+            </div>
         </div>
 
         <footer id="footer-Section">
@@ -188,18 +276,18 @@ if (!empty($_GET["action"])) {
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form action="#" method="post">
+                        <form action="account.php" method="post">
                             <div class="input-group input-group-sm mb-3">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text" id="inputGroup-sizing-sm">Username</span>
                                 </div>
-                                <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                                <input type="text" name="username" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
                             </div>
                             <div class="input-group input-group-sm mb-3">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text" id="inputGroup-sizing-sm">Password</span>
                                 </div>
-                                <input type="password" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                                <input type="password" name="password" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
                             </div>
                             <input class="btn btn-primary" type="submit" value="Submit">
                             <input class="btn btn-primary" type="reset" value="Reset">
@@ -219,7 +307,7 @@ if (!empty($_GET["action"])) {
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form action="#" method="post">
+                        <form action="account.php" method="post">
                             <div class="input-group input-group-sm mb-3">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text" id="inputGroup-sizing-sm">Email</span>
@@ -252,6 +340,29 @@ if (!empty($_GET["action"])) {
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="logoutModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="logoutModalLabel">Logout</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="account.php" method="post">
+                            <p class="lead">
+                                Are you sure to Logout Account ?
+                            </p>
+                            <input name="logout">
+                            <button type="button" class="btn btn-success">Yes</button>
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
+                        </form>
                     </div>
                 </div>
             </div>
