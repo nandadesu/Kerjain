@@ -111,109 +111,70 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                     <?php
                     }
                     ?>
-                    <li class="nav-item">
-                        <button type="button" class="btn btn-link"><a href="cart.php"><i class="fas fa-shopping-cart"></i></a></button>
-                    </li>
                 </ul>
             </div>
         </nav>
 
         <div class="container-fluid mt-2 mb-4">
-            <div id="product-grid">
-                <div class="txt-heading">Products</div>
-                <div class="row">
-                    <?php
-                    $product_array = $db_handle->runQuery("SELECT * FROM products WHERE category = 'interior' AND id > 0 AND id <= 4 ORDER BY id ASC");
-                    if (!empty($product_array)) {
-                        foreach ($product_array as $key => $value) {
-                            ?>
-                            <div class="col-3">
-                                <div class="card" style="width: 18rem;">
-                                    <form method="post" action="cart.php?action=add&code=<?php echo $product_array[$key]["code"]; ?>">
-                                        <img src="<?php echo $product_array[$key]["image"]; ?>" class="card-img-top" alt="...">
-                                        <div class="card-body">
-                                            <h5 class="card-title"><?php echo $product_array[$key]["merk"]; ?></h5>
-                                            <p class="card-text">Starting from Rp.<?php echo "$" . $product_array[$key]["price"]; ?></p>
-                                            <div class="cart-action"><input type="number" class="product-quantity" name="quantity" value="1" size="2" /><button type="submit" value="Add to Cart" class="btn btn-success" /></div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                    <?php
-                        }
-                    }
+            <div id="shopping-cart">
+                <div class="txt-heading">Shopping Cart</div>
+
+                <a id="btnEmpty" href="cart.php?action=empty">Empty Cart</a>
+                <?php
+                if (isset($_SESSION["cart_item"])) {
+                    $total_quantity = 0;
+                    $total_price = 0;
                     ?>
-                </div>
-                <br>
-                <div class="row">
-                    <?php
-                    $product_array = $db_handle->runQuery("SELECT * FROM products WHERE category = 'interior' AND id > 4 AND id < 9 ORDER BY id ASC");
-                    if (!empty($product_array)) {
-                        foreach ($product_array as $key => $value) {
-                            ?>
-                            <div class="col-3">
-                                <div class="card" style="width: 18rem;">
-                                    <form method="post" action="cart.php?action=add&code=<?php echo $product_array[$key]["code"]; ?>">
-                                        <img src="<?php echo $product_array[$key]["image"]; ?>" class="card-img-top" alt="...">
-                                        <div class="card-body">
-                                            <h5 class="card-title"><?php echo $product_array[$key]["merk"]; ?></h5>
-                                            <p class="card-text">Starting from Rp.<?php echo "$" . $product_array[$key]["price"]; ?></p>
-                                            <div class="cart-action"><input type="number" class="product-quantity" name="quantity" value="1" size="2" /><button type="submit" value="Add to Cart" class="btn btn-success" /></div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                    <?php
-                        }
-                    }
+                    <table class="tbl-cart" cellpadding="10" cellspacing="1">
+                        <tbody>
+                            <tr>
+                                <th style="text-align:left;">Nama Barang</th>
+                                <th style="text-align:left;">Code</th>
+                                <th style="text-align:right;" width="5%">Quantity</th>
+                                <th style="text-align:right;" width="10%">Unit Price</th>
+                                <th style="text-align:right;" width="10%">Price</th>
+                                <th style="text-align:center;" width="5%">Remove</th>
+                            </tr>
+                            <?php
+                                foreach ($_SESSION["cart_item"] as $item) {
+                                    $item_price = $item["quantity"] * $item["price"];
+                                    ?>
+                                <tr>
+                                    <td><img src="<?php echo $item["image"]; ?>" class="img-thumbnail" style="width: 50px;height:50px;" /><?php echo $item["merk"]; ?></td>
+                                    <td><?php echo $item["code"]; ?></td>
+                                    <td style="text-align:right;"><?php echo $item["quantity"]; ?></td>
+                                    <td style="text-align:right;"><?php echo "Rp " . $item["price"]; ?></td>
+                                    <td style="text-align:right;"><?php echo "Rp " . number_format($item_price, 2); ?></td>
+                                    <td style="text-align:center;"><a href="cart.php?action=remove&code=<?php echo $item["code"]; ?>" class="btnRemoveAction"><i class="fas fa-trash"></i></a></td>
+                                </tr>
+                            <?php
+                                    $total_quantity += $item["quantity"];
+                                    $total_price += ($item["price"] * $item["quantity"]);
+                                    $_SESSION['total'] = $total_price;
+                                }
+                                ?>
+
+                            <tr>
+                                <td colspan="2" align="right">Total:</td>
+                                <td align="right"><?php echo $total_quantity; ?></td>
+                                <td align="right" colspan="2"><strong><?php echo "Rp " . number_format($total_price); ?></strong></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td colspan="6" align="right"><a class="btn btn-success" href="checkout.php" role="button">Checkout</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                <?php
+                } else {
                     ?>
-                </div>
+                    <div class="no-records">Your Cart is Empty</div>
+                <?php
+                }
+                ?>
             </div>
         </div>
 
-        <footer id="footer-Section">
-            <div class="footer-top-layout">
-                <div class="container">
-                    <div class="row">
-                        <div class="col">
-                            <div class="footer-col-item">
-                                <h4>Address</h4>
-                                <address>
-                                    Gedung Sipil Lt 5 - 7 <br>
-                                    Politeknik Negeri Malang
-                                </address>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="footer-col-item">
-                                <h4>Contact Us</h4>
-                                <div class="item-contact">
-                                    <a href="tel:630-885-9200"><span class="link-id">Phone</span>:<span>+628-1234-5678-910</span>
-                                        <a href="mailto:info@brandcatmedia.com"><span class="link-id">E-Mail</span>:<span>support@ikia.com</span></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="footer-col-item">
-                                <h4>Subscribe</h4>
-                                <form class="signUpNewsletter" action="" method="get">
-                                    <input name="" class="gt-email form-control" placeholder="You@youremail.com" type="text">
-                                    <input name="" class="btn-go" value="Go" type="button">
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div><br>
-                <div class="socialMedia-footer">
-                    <a href="#"><i class="fab fa-facebook-square"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-youtube"></i></a>
-                </div>
-
-                <div class="copyright-tag">Copyright © 2019. All Rights Reserved.</div>
-            </div>
-        </footer>
 
         <!-- JS -->
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

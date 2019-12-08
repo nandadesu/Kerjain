@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2019-12-08 22:15:40
+Date: 2019-12-09 05:55:37
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -57,9 +57,10 @@ CREATE TABLE `users` (
   `address` varchar(255) NOT NULL,
   `money` int(255) NOT NULL,
   PRIMARY KEY (`id`,`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of users
 -- ----------------------------
-INSERT INTO `users` VALUES ('1', 'test', 'test@gmail.com', '098f6bcd4621d373cade4e832627b4f6', 'jalan test', '9000');
+INSERT INTO `users` VALUES ('4', 'Hello', 's@gmail', '$2y$10$nVBUPnYobMWSSGUoT6N0w.4BmB8s1yUJUQovOa73.9QZG.hUfrR3a', 'aaa', '9000');
+INSERT INTO `users` VALUES ('5', 'User', 's@gmail', '$2y$10$82FcrpoxwmNr7KHt5rAw1.cAi8m1WSGfIwdlJGB.2w24VcjKR1uPe', 'aaa', '9000');
