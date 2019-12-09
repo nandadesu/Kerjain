@@ -1,6 +1,16 @@
 <?php
+include "connect_user.php";
 session_start();
-require_once("connection.php");
+
+if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
+    $username = $_SESSION['username'];
+    $id = $_SESSION['id'];
+    $SQL = "SELECT * FROM users WHERE username = '$username' AND id = '$id'";
+    $result = mysqli_query($connect, $SQL);
+    $row = mysqli_fetch_assoc($result);
+} elseif (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
+    header("location: login.php");
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -33,89 +43,64 @@ require_once("connection.php");
                 <li class="nav-item">
                     <a class="nav-link" href="index.php">Home</a>
                 </li>
-                <li class="nav-item active">
-                    <a class="nav-link" href="about.php">About<span class="sr-only">(current)</span></a>
+                <li class="nav-item">
+                    <a class="nav-link" href="about.php">About</a>
                 </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Products
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item" href="product.php">Interior Product</a>
-                        <a class="dropdown-item" href="product.php">Exterior Product</a>
-                    </div>
+                <li class="nav-item">
+                    <a class="nav-link" href="product.php">Product</a>
                 </li>
             </ul>
             <ul class="nav navbar-nav ml-auto">
-                <li class="nav-item active">
-                    <button type="button" class="btn btn-link" data-toggle="modal" data-target="#loginModal"><i class="far fa-user-circle"></i></button>
-                </li>
+                <?php
+                if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
+                    ?>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="far fa-user-circle"></i>
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <a class="dropdown-item" href="account.php">Account Information</a>
+                            <a class="dropdown-item" href="logout.php">Logout</a>
+                        </div>
+                    </li>
+                <?php
+                } else {
+                    ?>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="far fa-user-circle"></i>
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <a class="dropdown-item" href="login.php">Login</a>
+                            <a class="dropdown-item" href="register.php">Register</a>
+                        </div>
+                    </li>
+                <?php
+                }
+                ?>
                 <li class="nav-item">
-                    <button type="button" class="btn btn-link" data-toggle="modal" data-target="#regModal"><i class="fas fa-shopping-cart"></i></button>
+                    <button type="button" class="btn btn-link"><a href="cart.php"><i class="fas fa-shopping-cart"></i></a></button>
                 </li>
             </ul>
         </div>
     </nav>
 
     <div class="container-fluid">
-        <h1 class="text-center">Hello, </h1>
+        <h1 class="text-center">Hello, <?php echo $username ?></h1>
         <hr>
         <div class="row">
             <div class="col-3"></div>
             <div class="col-6">
-                <b>Email Anda</b> : "email" <br>
-                <b>Alamat Anda</b> : "alamat" <br><br>
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text">Total Money</span>
-                        <span class="input-group-text">Rp.</span>
-                    </div>
-                    <input type="number" class="form-control text-right" aria-label="Amount (to the nearest dollar)" value="1000000000" disabled>
-                </div>
-
+                <b>Your Email</b> : <?php echo $row["email"] ?> <br>
+                <b>Your Address</b> : <?php echo $row["address"] ?> <br>
+                <b>Your Total Money</b> : <?php echo $row["money"] ?> <br><br>
+                <?php
+                if ($row["money"] < 10000) {
+                    echo "Your Money is almost empty, with less than 10000 you cant buy anything.";
+                }
+                ?>
             </div>
             <div class="col-3"></div>
-        </div>
-    </div>
-
-    <!-- Modal -->
-    <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="loginModalLabel">Login</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    ...
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="regModal" tabindex="-1" role="dialog" aria-labelledby="regModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="regModalLabel">Login</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    ...
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
-            </div>
         </div>
     </div>
 
