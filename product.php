@@ -1,52 +1,8 @@
 <?php
 session_start();
 require_once("connection.php");
-if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
-    header("location: login.php");
-    exit;
-} else {
-    $db_handle = new DBController();
-    if (!empty($_GET["action"])) {
-        switch ($_GET["action"]) {
-            case "add":
-                if (!empty($_POST["quantity"])) {
-                    $productByCode = $db_handle->runQuery("SELECT * FROM products WHERE code='" . $_GET["code"] . "'");
-                    $itemArray = array($productByCode[0]["code"] => array('merk' => $productByCode[0]["merk"], 'code' => $productByCode[0]["code"], 'quantity' => $_POST["quantity"], 'price' => $productByCode[0]["price"], 'image' => $productByCode[0]["image"]));
 
-                    if (!empty($_SESSION["cart_item"])) {
-                        if (in_array($productByCode[0]["code"], array_keys($_SESSION["cart_item"]))) {
-                            foreach ($_SESSION["cart_item"] as $k => $v) {
-                                if ($productByCode[0]["code"] == $k) {
-                                    if (empty($_SESSION["cart_item"][$k]["quantity"])) {
-                                        $_SESSION["cart_item"][$k]["quantity"] = 0;
-                                    }
-                                    $_SESSION["cart_item"][$k]["quantity"] += $_POST["quantity"];
-                                }
-                            }
-                        } else {
-                            $_SESSION["cart_item"] = array_merge($_SESSION["cart_item"], $itemArray);
-                        }
-                    } else {
-                        $_SESSION["cart_item"] = $itemArray;
-                    }
-                }
-                break;
-            case "remove":
-                if (!empty($_SESSION["cart_item"])) {
-                    foreach ($_SESSION["cart_item"] as $k => $v) {
-                        if ($_GET["code"] == $k)
-                            unset($_SESSION["cart_item"][$k]);
-                        if (empty($_SESSION["cart_item"]))
-                            unset($_SESSION["cart_item"]);
-                    }
-                }
-                break;
-            case "empty":
-                unset($_SESSION["cart_item"]);
-                break;
-        }
-    }
-}
+$db_handle = new DBController();
 ?>
     <!DOCTYPE html>
     <html lang="en">
@@ -79,7 +35,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                     <li class="nav-item">
                         <a class="nav-link" href="about.php">About</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item active">
                         <a class="nav-link" href="product.php">Product</a>
                     </li>
                 </ul>
@@ -120,7 +76,9 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 
         <div class="container-fluid mt-2 mb-4">
             <div id="product-grid">
-                <div class="txt-heading">Products</div>
+                <div class="txt-heading">
+                    <h1>Products</h1>
+                </div>
                 <div class="row">
                     <?php
                     $product_array = $db_handle->runQuery("SELECT * FROM products WHERE category = 'interior' AND id > 0 AND id <= 4 ORDER BY id ASC");
@@ -133,8 +91,8 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                                         <img src="<?php echo $product_array[$key]["image"]; ?>" class="card-img-top" alt="...">
                                         <div class="card-body">
                                             <h5 class="card-title"><?php echo $product_array[$key]["merk"]; ?></h5>
-                                            <p class="card-text">Starting from Rp.<?php echo "$" . $product_array[$key]["price"]; ?></p>
-                                            <div class="cart-action"><input type="number" class="product-quantity" name="quantity" value="1" size="2" /><button type="submit" value="Add to Cart" class="btn btn-success" /></div>
+                                            <p class="card-text">Starting from Rp.<?php echo "" . $product_array[$key]["price"]; ?></p>
+                                            <div class="cart-action"><input type="number" class="product-quantity" name="quantity" value="1" size="2" /><button type="submit" value="Add to Cart" class="btn btn-success">Beli</div>
                                         </div>
                                     </form>
                                 </div>
@@ -157,8 +115,8 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                                         <img src="<?php echo $product_array[$key]["image"]; ?>" class="card-img-top" alt="...">
                                         <div class="card-body">
                                             <h5 class="card-title"><?php echo $product_array[$key]["merk"]; ?></h5>
-                                            <p class="card-text">Starting from Rp.<?php echo "$" . $product_array[$key]["price"]; ?></p>
-                                            <div class="cart-action"><input type="number" class="product-quantity" name="quantity" value="1" size="2" /><button type="submit" value="Add to Cart" class="btn btn-success" /></div>
+                                            <p class="card-text">Starting from Rp.<?php echo "" . $product_array[$key]["price"]; ?></p>
+                                            <div class="cart-action"><input type="number" class="product-quantity" name="quantity" value="1" size="2" /><button type="submit" value="Add to Cart" class="btn btn-success">Beli</div>
                                         </div>
                                     </form>
                                 </div>

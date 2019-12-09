@@ -64,7 +64,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             $_SESSION["username"] = $username;
 
                             // Redirect user to welcome page
-                            header("location: index.php");
+                            header("location: /admin/crud_product.php");
                         } else {
                             // Display an error message if password is not valid
                             $password_err = "The password you entered was not valid.";
@@ -144,15 +144,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="col-4">
                 <ul class="nav nav-tabs">
                     <li class="nav-item">
-                        <a class="nav-link active" href="#">🎴 User</a>
+                        <a class="nav-link" href="login.php">🎴 User</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="loginAdmin.php">👨‍💻 Admin</a>
+                        <a class="nav-link active" href="#">👨‍💻 Admin</a>
                     </li>
                 </ul>
                 <div class="wrapper">
                     <h2>Login</h2>
-                    <p>Please fill in your credentials to login.</p>
+                    <p>So you are an Admin Right!</p>
                     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
                         <div class="form-group <?php echo (!empty($username_err)) ? 'has-error' : ''; ?>">
                             <label>Username</label>
@@ -167,7 +167,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <div class="form-group">
                             <input type="submit" class="btn btn-primary" value="Login">
                         </div>
-                        <p>Don't have an account? <a href="register.php">Sign up now</a>.</p>
                     </form>
                 </div>
             </div>

@@ -26,7 +26,7 @@ session_start();
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
-                <li class="nav-item">
+                <li class="nav-item active">
                     <a class="nav-link" href="index.php">Home</a>
                 </li>
                 <li class="nav-item">
@@ -100,141 +100,179 @@ session_start();
         </div>
     </div>
 
-    <div class="container-fluid mb-3">
+    <div class="container-fluid mb-4">
         <div class="row">
             <div class="col">
                 <figure class="figure">
                     <img src="./assets/img/product-range.webp" class="figure-img img-fluid rounded" alt="A generic square placeholder image with rounded corners in a figure.">
-                    <figcaption class="figure-caption text-center">A caption for the above image.</figcaption>
+                    <figcaption class="figure-caption text-center" style="font-size:18pt; font-weight:900">Family room</figcaption>
                 </figure>
             </div>
             <div class="col">
                 <figure class="figure">
-                    <img src="./assets/img/product-range.webp" class="figure-img img-fluid rounded" alt="A generic square placeholder image with rounded corners in a figure.">
-                    <figcaption class="figure-caption text-center">A caption for the above image.</figcaption>
+                    <img src="./assets/img/fbox3.jpg" class="figure-img img-fluid rounded" alt="A generic square placeholder image with rounded corners in a figure.">
+                    <figcaption class="figure-caption text-center" style="font-size:18pt; font-weight:900">Modern living room</figcaption>
                 </figure>
             </div>
             <div class="col">
                 <figure class="figure">
-                    <img src="./assets/img/product-range.webp" class="figure-img img-fluid rounded" alt="A generic square placeholder image with rounded corners in a figure.">
-                    <figcaption class="figure-caption text-center">A caption for the above image.</figcaption>
+                    <img src="./assets/img/box2.jpg" class="figure-img img-fluid rounded" alt="A generic square placeholder image with rounded corners in a figure.">
+                    <figcaption class="figure-caption text-center" style="font-size:18pt; font-weight:900">Cozy room</figcaption>
                 </figure>
             </div>
         </div>
     </div>
 
-
     <div class="row">
         <div class="col"></div>
         <div class="col">
-            <h2 class="text-center">Get a little inspiration!</h2>
+            <h2 class="text-center" style="font-weight:900; font-family:Helvetica;">Get a inspiration!</h2>
         </div>
         <div class="col"></div>
     </div>
     <div class="row">
         <div class="col"></div>
         <div class="col-10">
-            <p class="text-center">
+            <p class="text-center" style=" font-family:Helvetica;font-size:14pt">
                 We don't believe in perfect homes. We believe in homes that are a perfect reflection of the people who live inside.
             </p>
         </div>
         <div class="col"></div>
-    </div>
+    </div><br>
 
     <div class="container-fluid rounded bg-light mb-3 shadow-sm" style="width: 98%;">
         <div class="row">
             <div class="col-8">
-                <img src="./assets/img/Board_games_and_cards.webp" class="img-fluid rounded m-2" style="width: 95%" alt="">
+                <img src="./assets/img/bigbox.jpg" class="img-fluid rounded m-2" style="width: 95%" alt="">
             </div>
             <div class="col-4">
                 <div class="row">
-                    <h2>Featured <br>
-                        Inspiration</h2>
+                    <h2 style="font-weight:600;">Featured Inspiration</h2>
                 </div>
                 <hr>
                 <div class="row">
                     <figure class="figure">
-                        <img src="./assets/img/A_table_set_for_the_holidays_TN.webp" class="figure-img img-fluid rounded" alt="">
-                        <figcaption class="figure-caption text-xs-right text-center"><b>Holiday table ideas</b></figcaption>
+                        <img src="./assets/img/box.jpg" class="figure-img img-fluid rounded" alt="">
+                        <figcaption class="figure-caption text-xs-right text-center"><b>Holiday ideas</b></figcaption>
                     </figure>
                 </div>
                 <div class="row">
                     <figure class="figure">
-                        <img src="./assets/img/A_table_set_for_the_holidays_TN.webp" class="figure-img img-fluid rounded" alt="">
-                        <figcaption class="figure-caption text-xs-right text-center"><b>Holiday hosting tips</b></figcaption>
+                        <img src="./assets/img/box4.jpg" class="figure-img img-fluid rounded" alt="">
+                        <figcaption class="figure-caption text-xs-right text-center"><b>Modern room</b></figcaption>
                     </figure>
                 </div>
                 <div class="row">
                     <figure class="figure">
-                        <img src="./assets/img/A_table_set_for_the_holidays_TN.webp" class="figure-img img-fluid rounded" alt="">
-                        <figcaption class="figure-caption text-xs-right text-center"><b>Fun lazy day games</b></figcaption>
+                        <img src="./assets/img/fbox2.jpg" class="figure-img img-fluid rounded" alt="">
+                        <figcaption class="figure-caption text-xs-right text-center"><b>lazy day</b></figcaption>
                     </figure>
                 </div>
             </div>
         </div>
     </div>
-
+    <br><br><br>
     <div class="row">
         <div class="col"></div>
         <div class="col">
             <h2 class="text-center">Shop by Category</h2>
         </div>
         <div class="col"></div>
-    </div>
+    </div><br>
     <div class="container-fluid mt-2 mb-3">
         <div class="row">
             <div class="col">
                 <figure class="figure">
-                    <img src="./assets/img/1rhp-shop-by-cat-500x500-Desks.webp" class="figure-img img-fluid rounded" alt="">
-                    <figcaption class="figure-caption text-xs-right text-center"><b>Desk</b></figcaption>
+                    <img src="./assets/img/products/p1.jpg" class="figure-img img-fluid rounded" alt="">
+                    <figcaption class="figure-caption text-xs-right text-left">
+                        <h2>KLIPPAN</h2>
+                    </figcaption>
+                    <figcaption class="figure-caption text-xs-right text-left">
+                        <h4>Rp 800.000</h4>
+                    </figcaption>
                 </figure>
             </div>
             <div class="col">
                 <figure class="figure">
-                    <img src="./assets/img/1rhp-shop-by-cat-500x500-Desks.webp" class="figure-img img-fluid rounded" alt="">
-                    <figcaption class="figure-caption text-xs-right text-center"><b>Desk</b></figcaption>
+                    <img src="./assets/img/products/p2.jpg" class="figure-img img-fluid rounded" alt="">
+                    <figcaption class="figure-caption text-xs-right text-left">
+                        <h2>VIMLE</h2>
+                    </figcaption>
+                    <figcaption class="figure-caption text-xs-right text-left">
+                        <h4>Rp 1.500.000</h4>
+                    </figcaption>
                 </figure>
             </div>
             <div class="col">
                 <figure class="figure">
-                    <img src="./assets/img/1rhp-shop-by-cat-500x500-Desks.webp" class="figure-img img-fluid rounded" alt="">
-                    <figcaption class="figure-caption text-xs-right text-center"><b>Desk</b></figcaption>
+                    <img src="./assets/img/products/p3.jpg" class="figure-img img-fluid rounded" alt="">
+                    <figcaption class="figure-caption text-xs-right text-left">
+                        <h2>KIVIK</h2>
+                    </figcaption>
+                    <figcaption class="figure-caption text-xs-right text-left">
+                        <h4>Rp 1.870.000</h4>
+                    </figcaption>
                 </figure>
             </div>
             <div class="col">
                 <figure class="figure">
-                    <img src="./assets/img/1rhp-shop-by-cat-500x500-Desks.webp" class="figure-img img-fluid rounded" alt="">
-                    <figcaption class="figure-caption text-xs-right text-center"><b>Desk</b></figcaption>
+                    <img src="./assets/img/products/p4.jpg" class="figure-img img-fluid rounded" alt="">
+                    <figcaption class="figure-caption text-xs-right text-left">
+                        <h2>LUNSTER</h2>
+                    </figcaption>
+                    <figcaption class="figure-caption text-xs-right text-left">
+                        <h4>Rp 940.000</h4>
+                    </figcaption>
                 </figure>
             </div>
-        </div>
+        </div><br><br>
         <div class="row">
             <div class="col">
                 <figure class="figure">
-                    <img src="./assets/img/1rhp-shop-by-cat-500x500-Desks.webp" class="figure-img img-fluid rounded" alt="">
-                    <figcaption class="figure-caption text-xs-right text-center"><b>Desk</b></figcaption>
+                    <img src="./assets/img/products/p5.jpg" class="figure-img img-fluid rounded" alt="">
+                    <figcaption class="figure-caption text-xs-right text-left">
+                        <h2>KASTED</h2>
+                    </figcaption>
+                    <figcaption class="figure-caption text-xs-right text-left">
+                        <h4>Rp 890.000</h4>
+                    </figcaption>
                 </figure>
             </div>
             <div class="col">
                 <figure class="figure">
-                    <img src="./assets/img/1rhp-shop-by-cat-500x500-Desks.webp" class="figure-img img-fluid rounded" alt="">
-                    <figcaption class="figure-caption text-xs-right text-center"><b>Desk</b></figcaption>
+                    <img src="./assets/img/products/p6.jpg" class="figure-img img-fluid rounded" alt="">
+                    <figcaption class="figure-caption text-xs-right text-left">
+                        <h2>LITTER</h2>
+                    </figcaption>
+                    <figcaption class="figure-caption text-xs-right text-left">
+                        <h4>Rp 789.000</h4>
+                    </figcaption>
                 </figure>
             </div>
             <div class="col">
                 <figure class="figure">
-                    <img src="./assets/img/1rhp-shop-by-cat-500x500-Desks.webp" class="figure-img img-fluid rounded" alt="">
-                    <figcaption class="figure-caption text-xs-right text-center"><b>Desk</b></figcaption>
+                    <img src="./assets/img/products/p7.jpg" class="figure-img img-fluid rounded" alt="">
+                    <figcaption class="figure-caption text-xs-right text-left">
+                        <h2>BUDSY</h2>
+                    </figcaption>
+                    <figcaption class="figure-caption text-xs-right text-left">
+                        <h4>Rp 2.040.000</h4>
+                    </figcaption>
                 </figure>
             </div>
             <div class="col">
                 <figure class="figure">
-                    <img src="./assets/img/1rhp-shop-by-cat-500x500-Desks.webp" class="figure-img img-fluid rounded" alt="">
-                    <figcaption class="figure-caption text-xs-right text-center"><b>Desk</b></figcaption>
+                    <img src="./assets/img/products/p8.jpg" class="figure-img img-fluid rounded" alt="">
+                    <figcaption class="figure-caption text-xs-right text-left">
+                        <h2>RODDY</h2>
+                    </figcaption>
+                    <figcaption class="figure-caption text-xs-right text-left">
+                        <h4>Rp 1.240.000</h4>
+                    </figcaption>
                 </figure>
             </div>
         </div>
-    </div>
+    </div><br><br>
 
     <footer id="footer-Section">
         <div class="footer-top-layout">
